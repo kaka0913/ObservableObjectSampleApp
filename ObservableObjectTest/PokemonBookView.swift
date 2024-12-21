@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct PokemonListItem: View {
-    @Binding var pokemon: Pokemon
+    @Binding var isFavorite: Bool
+    let name: String
+    let id: Int
     
     var body: some View {
         HStack {
-            AsyncImage(url: URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/\(pokemon.id).png")) { image in
+            AsyncImage(url: URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/\(id).png")) { image in
                 image
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -23,9 +25,9 @@ struct PokemonListItem: View {
             }
             
             VStack(alignment: .leading) {
-                Text(pokemon.name.capitalized)
+                Text(name.capitalized)
                     .font(.headline)
-                Text("No.\(pokemon.id)")
+                Text("No.\(id)")
                     .font(.subheadline)
                     .foregroundColor(.gray)
             }
@@ -33,10 +35,10 @@ struct PokemonListItem: View {
             Spacer()
             
             Button(action: {
-                pokemon.isFavorite.toggle()
+                isFavorite.toggle()
             }) {
-                Image(systemName: pokemon.isFavorite ? "heart.fill" : "heart")
-                    .foregroundColor(pokemon.isFavorite ? .red : .gray)
+                Image(systemName: isFavorite ? "heart.fill" : "heart")
+                    .foregroundColor(isFavorite ? .red : .gray)
             }
         }
         .padding(.vertical, 4)
@@ -47,13 +49,12 @@ struct PokemonBookView: View {
     @StateObject private var viewModel = PokemonViewModel()
     
     var body: some View {
+        let _ = Self._printChanges()
         NavigationStack {
             
             List {
                 ForEach(viewModel.pokemons.indices, id: \.self) { index in
-                    PokemonListItem(
-                        pokemon: $viewModel.pokemons[index]
-                    )
+                    PokemonListItem(isFavorite: $viewModel.pokemons[index].isFavorite, name: viewModel.pokemons[index].name, id: viewModel.pokemons[index].id)
                 }
             }
 

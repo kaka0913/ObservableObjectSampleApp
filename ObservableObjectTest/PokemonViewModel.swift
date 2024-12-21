@@ -38,8 +38,6 @@ class PokemonViewModel: ObservableObject {
                 do {
                     let response = try JSONDecoder().decode(PokemonResponse.self, from: data)
                     self?.pokemons = response.results
-                    print("😃Fetched \(response.results.count) Pokemon")
-                    print("🧐Result \(response.results)")
                 } catch {
                     self?.errorMessage = error.localizedDescription
                     print("😄Decode error: \(error)")
