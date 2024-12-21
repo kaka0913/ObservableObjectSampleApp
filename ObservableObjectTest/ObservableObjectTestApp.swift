@@ -11,7 +11,7 @@ import SwiftUI
 struct ObservableObjectTestApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            PokemonBookView()
         }
     }
 }
